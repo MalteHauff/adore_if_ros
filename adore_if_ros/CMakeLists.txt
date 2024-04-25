@@ -1060,6 +1060,10 @@ target_link_libraries(plainxmlexporter
                           libadore::if_r2s 
                           plotlablib::plotlablib
 )
+add_executable(test_graphSearch src/test_graphSearch.cpp)
+target_include_directories(test_graphSearch PRIVATE include ${catkin_INCLUDE_DIRS})
+target_link_libraries(test_graphSearch PRIVATE ${catkin_LIBRARIES} libadore::apps libadore::fun libadore::env libadore::sim libadore::mad)
+
 
 
 ## Specify libraries to link a library or executable target against
@@ -1178,6 +1182,7 @@ install(
     plot_trajectories_node
     plot_roadannotations_node
     adore_pvprovider_node
+    test_graphSearch
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 install(
