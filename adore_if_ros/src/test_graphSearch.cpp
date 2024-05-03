@@ -16,20 +16,19 @@ namespace adore
 {
     namespace if_ROS
     {
-        class GraphSearchNode : public Baseapp
-        {
+    class GraphSearchNode : public adore_if_ros_scheduling::Baseapp {
         public:
             adore::apps::GraphSearch *gs_;
             GraphSearchNode() {}
             void init(int argc, char **argv, double rate, std::string nodename)
             {
-                Baseapp::init(argc, argv, rate, nodename);
-                Baseapp::initSim();
-                gs_ = new adore::apps::GraphSearch(Baseapp::getRosNodeHandle());
+                adore_if_ros_scheduling::Baseapp::init(argc, argv, rate, nodename);
+                adore_if_ros_scheduling::Baseapp::initSim();
+                gs_ = new adore::apps::GraphSearch(adore_if_ros_scheduling::Baseapp::getRosNodeHandle());
 
                 // timer callbacks
                 std::function<void()> run_fcn(std::bind(&adore::apps::GraphSearch::update, gs_));
-                Baseapp::addTimerCallback(run_fcn);
+                adore_if_ros_scheduling::Baseapp::addTimerCallback(run_fcn);
             }
         };
     } // namespace if_ROS

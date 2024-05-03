@@ -118,6 +118,8 @@ find_package(ZeroMQ CONFIG REQUIRED)
 find_package(XercesC 3.2.0 REQUIRED)
 
 
+
+
 set(CMAKE_MODULE_PATH
    ${CMAKE_CURRENT_SOURCE_DIR}/../external
 #   ${CMAKE_CURRENT_SOURCE_DIR}/../libadore/external
@@ -1062,7 +1064,13 @@ target_link_libraries(plainxmlexporter
 )
 add_executable(test_graphSearch src/test_graphSearch.cpp)
 target_include_directories(test_graphSearch PRIVATE include ${catkin_INCLUDE_DIRS})
-target_link_libraries(test_graphSearch PRIVATE ${catkin_LIBRARIES} libadore::apps libadore::fun libadore::env libadore::sim libadore::mad)
+target_link_libraries(test_graphSearch 
+                PRIVATE
+                ${catkin_LIBRARIES} 
+                libadore::apps 
+                libadore::fun libadore::env 
+                libadore::sim libadore::mad
+                adore_if_ros_scheduling::adore_if_ros_scheduling)
 
 
 
