@@ -18,13 +18,13 @@
     shallow = true
 [submodule "adore_if_ros_msg"]
 	path = adore_if_ros_msg
-	url = git@github.com:DLR-TS/adore_if_ros_msg.git
+	url = git@github.com:MalteHauff/adore_if_ros_msg.git
 [submodule "libadore"]
 	path = libadore
-	url = git@github.com:DLR-TS/libadore.git
+	url = git@github.com:MalteHauff/libadore.git
 [submodule "plotlablib"]
 	path = plotlablib
-	url = git@github.com:DLR-TS/plotlablib.git
+	url = git@github.com:MalteHauff/plotlablib.git
 [submodule "make_gadgets"]
 	path = make_gadgets
 	url = git@github.com:DLR-TS/make_gadgets.git
@@ -35,4 +35,4 @@
 	url = git@github.com:DLR-TS/ci_teststand.git
 [submodule "adore_scheduling"]
 	path = adore_scheduling
-	url = git@github.com:DLR-TS/adore_scheduling.git
+	url = git@github.com:MalteHauff/adore_scheduling.git
