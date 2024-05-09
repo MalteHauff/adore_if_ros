@@ -1066,7 +1066,8 @@ add_executable(test_graphSearch src/test_graphSearch.cpp)
 target_include_directories(test_graphSearch PRIVATE include ${catkin_INCLUDE_DIRS})
 target_link_libraries(test_graphSearch 
                 PRIVATE
-                ${catkin_LIBRARIES} 
+                ${catkin_LIBRARIES}
+                plotlablib::plotlablib 
                 libadore::apps 
                 libadore::fun libadore::env 
                 libadore::sim libadore::mad
