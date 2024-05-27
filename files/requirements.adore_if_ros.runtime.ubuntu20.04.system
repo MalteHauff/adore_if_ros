@@ -6,3 +6,5 @@ libopenblas-dev
 
 ## required by many launchfiles
 ros-noetic-topic-tools
+
+ros-noetic-map-server

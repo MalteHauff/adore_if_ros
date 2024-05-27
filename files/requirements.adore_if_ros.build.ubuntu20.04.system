@@ -4,6 +4,7 @@ g++
 gcc
 freeglut3-dev
 ros-noetic-tf
+ros-noetic-map-server
 libcurl4-openssl-dev
 python3-rosdep
 python3-rosinstall
