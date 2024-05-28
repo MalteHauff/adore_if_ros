@@ -24,11 +24,21 @@ namespace adore
             {
                 adore_if_ros_scheduling::Baseapp::init(argc, argv, rate, nodename);
                 adore_if_ros_scheduling::Baseapp::initSim();
-                gs_ = new adore::apps::GraphSearch(adore_if_ros_scheduling::Baseapp::getRosNodeHandle());
+                ros::NodeHandle node;
+                ros::Subscriber sub = node.subscribe("map",10, &GraphSearchNode::receive_map_data, this);
+                
+            }
+        private:
+            bool first_set;
+            void receive_map_data(const nav_msgs::OccupancyGrid::ConstPtr &msg){
+                if(!first_set){
+                    first_set=false;
+                    gs_ = new adore::apps::GraphSearch(adore_if_ros_scheduling::Baseapp::getRosNodeHandle(), msg.data, msg.info.height, msg.data.width);
 
-                // timer callbacks
-                std::function<void()> run_fcn(std::bind(&adore::apps::GraphSearch::update, gs_));
-                adore_if_ros_scheduling::Baseapp::addTimerCallback(run_fcn);
+                    // timer callbacks
+                    std::function<void()> run_fcn(std::bind(&adore::apps::GraphSearch::update, gs_));
+                    adore_if_ros_scheduling::Baseapp::addTimerCallback(run_fcn);
+                }
             }
         };
     } // namespace if_ROS
