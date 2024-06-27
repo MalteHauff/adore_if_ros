@@ -36,7 +36,7 @@ namespace adore
             void receive_map_data(const nav_msgs::OccupancyGrid::ConstPtr &msg){
                 
                 if(!first_set){
-                    first_set=false
+                    first_set=false;
                     std::cout << typeid(msg->data).name() << '\n';
                     gs_ = new adore::apps::GraphSearch(adore_if_ros_scheduling::Baseapp::getRosNodeHandle(), (uint32_t)(msg->info.height), (uint32_t)(msg->info.width));//, msg->data, (uint32_t)msg->info.height, (uint32_t)msg->info.width);
 
@@ -57,3 +57,4 @@ int main(int argc, char **argv)
     node->run();
     return 0;
 }
+
