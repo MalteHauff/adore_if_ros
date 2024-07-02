@@ -24,6 +24,7 @@ namespace adore
         public:
             adore::apps::GraphSearch* gs_;
             GraphSearchNode() {}
+            bool validStart, validEnd;
             void init(int argc, char **argv, double rate, std::string nodename)
             {
                 adore_if_ros_scheduling::Baseapp::init(argc, argv, rate, nodename);
@@ -43,7 +44,7 @@ namespace adore
                         new_data[i] = msg->data[i];
                     }
                     std::cout << typeid(msg->data).name() << '\n';
-                    gs_ = new adore::apps::GraphSearch((uint32_t)(msg->info.height), (uint32_t)(msg->info.width));//, msg->data, (uint32_t)msg->info.height, (uint32_t)msg->info.width);
+                    gs_->init(new_data, (uint32_t)(msg->info.height), (uint32_t)(msg->info.width));//, msg->data, (uint32_t)msg->info.height, (uint32_t)msg->info.width);
 
                     // timer callbacks
                     std::function<void()> run_fcn(std::bind(&adore::apps::GraphSearch::update, gs_));
@@ -55,14 +56,14 @@ namespace adore
             {
                         double r,p,y;
                         //tf::Matrix3x3(tf::Quaternion(msg.orientation.x,msg.orientation.y,msg.orientation.z,msg.orientation.w)).getRPY(r,p,y);
-                        validStart = Start.setPosition(msg.position.x,msg.position.y,y,Width,Length,Depth,adore::mad::CoordinateConversion::DegToRad(HeadingResolution), figure3);
+                        validStart = true;//Start.setPosition(msg.position.x,msg.position.y,y,Width,Length,Depth,adore::mad::CoordinateConversion::DegToRad(HeadingResolution), figure3);
                         //Start.print();
             }  
             void receiveEndPose(geometry_msgs::Pose msg)
             {
                         double r,p,y;
                         //tf::Matrix3x3(tf::Quaternion(msg.orientation.x,msg.orientation.y,msg.orientation.z,msg.orientation.w)).getRPY(r,p,y);
-                        validEnd = End.setPosition(msg.position.x,msg.position.y,y,Width,Length,Depth, adore::mad::CoordinateConversion::DegToRad(HeadingResolution),  figure3);
+                        validEnd = false; //End.setPosition(msg.position.x,msg.position.y,y,Width,Length,Depth, adore::mad::CoordinateConversion::DegToRad(HeadingResolution),  figure3);
                         //End.print();
             }     
                 
