@@ -14,6 +14,7 @@
 #include <stdint.h>
 #include <adore/apps/gap_provider.h>
 #include <adore/apps/graph_search.h>
+#include <geometry_msgs/Pose.h>
 
 namespace adore
 {
@@ -38,7 +39,7 @@ namespace adore
                 if(!first_set){
                     first_set=false
                     std::cout << typeid(msg->data).name() << '\n';
-                    gs_ = new adore::apps::GraphSearch(adore_if_ros_scheduling::Baseapp::getRosNodeHandle(), (uint32_t)(msg->info.height), (uint32_t)(msg->info.width));//, msg->data, (uint32_t)msg->info.height, (uint32_t)msg->info.width);
+                    gs_ = new adore::apps::GraphSearch((uint32_t)(msg->info.height), (uint32_t)(msg->info.width));//, msg->data, (uint32_t)msg->info.height, (uint32_t)msg->info.width);
 
                     // timer callbacks
                     std::function<void()> run_fcn(std::bind(&adore::apps::GraphSearch::update, gs_));
@@ -46,6 +47,21 @@ namespace adore
                 }
                 
             }
+             void receiveStartPose(geometry_msgs::Pose msg)
+            {
+                        double r,p,y;
+                        //tf::Matrix3x3(tf::Quaternion(msg.orientation.x,msg.orientation.y,msg.orientation.z,msg.orientation.w)).getRPY(r,p,y);
+                        validStart = Start.setPosition(msg.position.x,msg.position.y,y,Width,Length,Depth,adore::mad::CoordinateConversion::DegToRad(HeadingResolution), figure3);
+                        //Start.print();
+            }  
+            void receiveEndPose(geometry_msgs::Pose msg)
+            {
+                        double r,p,y;
+                        //tf::Matrix3x3(tf::Quaternion(msg.orientation.x,msg.orientation.y,msg.orientation.z,msg.orientation.w)).getRPY(r,p,y);
+                        validEnd = End.setPosition(msg.position.x,msg.position.y,y,Width,Length,Depth, adore::mad::CoordinateConversion::DegToRad(HeadingResolution),  figure3);
+                        //End.print();
+            }     
+                
         };
     } // namespace if_ROS
 } // namespace adore
