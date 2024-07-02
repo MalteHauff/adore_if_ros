@@ -37,10 +37,19 @@ namespace adore
             void receive_map_data(const nav_msgs::OccupancyGrid::ConstPtr &msg){
                 
                 if(!first_set){
-                    first_set=false
+                    first_set=false;
+                    int new_data[msg->info.height*msg->info.width];
+                    for(int i=0; i<msg->info.height*msg->info.width; i++){
+                        new_data[i] = msg->data[i];
+                    }
                     std::cout << typeid(msg->data).name() << '\n';
+<<<<<<< HEAD
                     gs_ = new adore::apps::GraphSearch((uint32_t)(msg->info.height), (uint32_t)(msg->info.width));//, msg->data, (uint32_t)msg->info.height, (uint32_t)msg->info.width);
 
+=======
+                    gs_->init(adore_if_ros_scheduling::Baseapp::getRosNodeHandle(),new_data, msg->info.height, msg->info.width);
+                    //gs_ = new adore::apps::GraphSearch(adore_if_ros_scheduling::Baseapp::getRosNodeHandle(),msg->data, msg->info.height, msg->info.width);
+>>>>>>> 199eca0055ce6069850e97184daa39dd81e85be6
                     // timer callbacks
                     std::function<void()> run_fcn(std::bind(&adore::apps::GraphSearch::update, gs_));
                     adore_if_ros_scheduling::Baseapp::addTimerCallback(run_fcn);
@@ -73,3 +82,4 @@ int main(int argc, char **argv)
     node->run();
     return 0;
 }
+
