@@ -43,7 +43,7 @@ docker_cp: set_env
 	docker cp $$(docker create --rm ${PROJECT}:${TAG}):/tmp/${PROJECT}/${PROJECT}/build ${PROJECT}
 
 .PHONY: clean_submodules
-clean_submodules: clean_plotlablib clean_adore_if_ros_msg clean_adore_scheduling
+clean_submodules: clean_plotlablib clean_adore_if_ros_msg clean_adore_scheduling clean_libadore
 
 .PHONY: clean 
 clean: set_env clean_submodules
