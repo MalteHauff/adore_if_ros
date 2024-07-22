@@ -22,7 +22,7 @@ namespace adore
     {
     class GraphSearchNode : public adore_if_ros_scheduling::Baseapp {
         public:
-            //adore::apps::GraphSearch* gs_;
+            adore::apps::GraphSearch* gs_;
             GraphSearchNode() {}
             bool validStart, validEnd;
             void init(int argc, char **argv, double rate, std::string nodename)
@@ -39,16 +39,17 @@ namespace adore
                 
                 if(!first_set){
                     first_set=false;
+                    int test;
                     int new_data[msg->info.height*msg->info.width];
                     for(int i=0; i<msg->info.height*msg->info.width; i++){
                         new_data[i] = msg->data[i];
                     }
                     std::cout << typeid(msg->data).name() << '\n';
-                    //gs_->init(new_data, (uint32_t)(msg->info.height), (uint32_t)(msg->info.width));//, msg->data, (uint32_t)msg->info.height, (uint32_t)msg->info.width);
+                    gs_->init(new_data, (uint32_t)(msg->info.height), (uint32_t)(msg->info.width));//, msg->data, (uint32_t)msg->info.height, (uint32_t)msg->info.width);
 
                     // timer callbacks
-                    //std::function<void()> run_fcn(std::bind(&adore::apps::GraphSearch::update, gs_));
-                    //adore_if_ros_scheduling::Baseapp::addTimerCallback(run_fcn);
+                    std::function<void()> run_fcn(std::bind(&adore::apps::GraphSearch::update, gs_));
+                    adore_if_ros_scheduling::Baseapp::addTimerCallback(run_fcn);
                 }
                 
             }
