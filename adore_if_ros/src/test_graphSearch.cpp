@@ -31,14 +31,16 @@ namespace adore
                 adore_if_ros_scheduling::Baseapp::initSim();
                 ros::NodeHandle node;
                 ros::Subscriber sub = node.subscribe("map",10, &GraphSearchNode::receive_map_data, this);
-                
+                first_set = false;
+                std::cout<<"init graph search node"<<std::endl;
             }
         private:
             bool first_set;
             void receive_map_data(const nav_msgs::OccupancyGrid::ConstPtr &msg){
-                
+                std::cout<<"receive map data"<<std::endl;
                 if(!first_set){
-                    first_set=false;
+                    std::cout<<"receive map data first time"<<std::endl;
+                    first_set=true;
                     int test;
                     int new_data[msg->info.height*msg->info.width];
                     for(int i=0; i<msg->info.height*msg->info.width; i++){
