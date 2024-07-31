@@ -13,7 +13,8 @@
 #include <nav_msgs/OccupancyGrid.h>
 #include <stdint.h>
 #include <adore/apps/gap_provider.h>
-//#include <adore/apps/graph_search.h>
+#include <adore/apps/graph_search.h>
+#include <adore_if_ros/factorycollection.h>
 #include <geometry_msgs/Pose.h>
 
 namespace adore
@@ -23,6 +24,8 @@ namespace adore
     class GraphSearchNode : public adore_if_ros_scheduling::Baseapp {
         public:
             adore::apps::GraphSearch* gs_;
+            //ros::NodeHandle node;
+            ros::Subscriber sub;
             GraphSearchNode() {}
             bool validStart, validEnd;
             void init(int argc, char **argv, double rate, std::string nodename)
@@ -30,7 +33,7 @@ namespace adore
                 adore_if_ros_scheduling::Baseapp::init(argc, argv, rate, nodename);
                 adore_if_ros_scheduling::Baseapp::initSim();
                 ros::NodeHandle node;
-                ros::Subscriber sub = node.subscribe("map",10, &GraphSearchNode::receive_map_data, this);
+                sub = node.subscribe("map",10, &GraphSearchNode::receive_map_data, this);
                 first_set = false;
                 std::cout<<"init graph search node"<<std::endl;
             }
@@ -46,12 +49,17 @@ namespace adore
                     for(int i=0; i<msg->info.height*msg->info.width; i++){
                         new_data[i] = msg->data[i];
                     }
-                    std::cout << typeid(msg->data).name() << '\n';
-                    gs_->init(new_data, (uint32_t)(msg->info.height), (uint32_t)(msg->info.width));//, msg->data, (uint32_t)msg->info.height, (uint32_t)msg->info.width);
-
+                    std::cout << "data init"<<std::endl;
+                    //std::cout << typeid(msg->data).name() << '\n';
+                    
+                    int data[1]; 
+                    gs_->init_gs(data,1,1);//(new_data, (uint32_t)(msg->info.height), (uint32_t)(msg->info.width));//, msg->data, (uint32_t)msg->info.height, (uint32_t)msg->info.width);
+                    std::cout << "gs init"<<std::endl;
                     // timer callbacks
                     std::function<void()> run_fcn(std::bind(&adore::apps::GraphSearch::update, gs_));
+                    std::cout << "gs bind"<<std::endl;
                     adore_if_ros_scheduling::Baseapp::addTimerCallback(run_fcn);
+                    std::cout << "gs sheduler"<<std::endl;
                 }
                 
             }
