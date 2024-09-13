@@ -21,7 +21,7 @@ namespace adore
 {
     namespace if_ROS
     {
-    class GraphSearchNode : public adore_if_ros_scheduling::Baseapp {
+    class GraphSearchNode : public FactoryCollection, public adore_if_ros_scheduling::Baseapp {
         public:
             adore::apps::GraphSearch* gs_;
             //ros::NodeHandle node;
@@ -32,8 +32,9 @@ namespace adore
             {
                 adore_if_ros_scheduling::Baseapp::init(argc, argv, rate, nodename);
                 adore_if_ros_scheduling::Baseapp::initSim();
-                ros::NodeHandle node;
-                sub = node.subscribe("map",10, &GraphSearchNode::receive_map_data, this);
+                FactoryCollection::init(getRosNodeHandle());
+                //ros::NodeHandle node;
+                sub = getRosNodeHandle()->subscribe<nav_msgs::OccupancyGrid>("map",10, &GraphSearchNode::receive_map_data, this);
                 first_set = false;
                 std::cout<<"init graph search node"<<std::endl;
             }
@@ -44,16 +45,15 @@ namespace adore
                 if(!first_set){
                     std::cout<<"receive map data first time"<<std::endl;
                     first_set=true;
-                    int test;
+                    //int test;
                     int new_data[msg->info.height*msg->info.width];
                     for(int i=0; i<msg->info.height*msg->info.width; i++){
-                        new_data[i] = msg->data[i];
+                        std::cout<<msg->data[i]<<std::endl;
                     }
+                    std::cout << typeid(msg->data[1]).name()<<std::endl;
                     std::cout << "data init"<<std::endl;
-                    //std::cout << typeid(msg->data).name() << '\n';
-                    
-                    int data[1]; 
-                    gs_->init_gs(data,1,1);//(new_data, (uint32_t)(msg->info.height), (uint32_t)(msg->info.width));//, msg->data, (uint32_t)msg->info.height, (uint32_t)msg->info.width);
+
+                    gs_=  new adore::apps::GraphSearch(new_data, (uint32_t)(msg->info.height), (uint32_t)(msg->info.width), Baseapp::getRosNodeHandle()); //->init_gs(data,1,1);//(new_data, (uint32_t)(msg->info.height), (uint32_t)(msg->info.width));//, msg->data, (uint32_t)msg->info.height, (uint32_t)msg->info.width);
                     std::cout << "gs init"<<std::endl;
                     // timer callbacks
                     std::function<void()> run_fcn(std::bind(&adore::apps::GraphSearch::update, gs_));
