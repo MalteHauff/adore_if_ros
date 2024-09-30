@@ -45,15 +45,14 @@ namespace adore
                 if(!first_set){
                     std::cout<<"receive map data first time"<<std::endl;
                     first_set=true;
-                    //int test;
-                    int new_data[msg->info.height*msg->info.width];
-                    for(int i=0; i<msg->info.height*msg->info.width; i++){
-                        std::cout<<msg->data[i]<<std::endl;
+                    int test=1;
+                    for(int i = 0; i < msg->info.width * msg->info.height; i++){
+                        if(msg->data[i]==-1){
+                            std::cout<<msg->data[i]<<std::endl;
+                        }
                     }
-                    std::cout << typeid(msg->data[1]).name()<<std::endl;
-                    std::cout << "data init new"<<std::endl;
 
-                    gs_=  new adore::apps::GraphSearch(new_data, (uint32_t)(msg->info.height), (uint32_t)(msg->info.width), Baseapp::getRosNodeHandle()); //->init_gs(data,1,1);//(new_data, (uint32_t)(msg->info.height), (uint32_t)(msg->info.width));//, msg->data, (uint32_t)msg->info.height, (uint32_t)msg->info.width);
+                    gs_=  new adore::apps::GraphSearch(msg, test, (uint32_t)(msg->info.height), (uint32_t)(msg->info.width), Baseapp::getRosNodeHandle()); //->init_gs(data,1,1);//(new_data, (uint32_t)(msg->info.height), (uint32_t)(msg->info.width));//, msg->data, (uint32_t)msg->info.height, (uint32_t)msg->info.width);
                     std::cout << "gs init"<<std::endl;
                     // timer callbacks
                     std::function<void()> run_fcn(std::bind(&adore::apps::GraphSearch::update, gs_));
