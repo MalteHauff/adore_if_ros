@@ -35,6 +35,7 @@ namespace adore
                 FactoryCollection::init(getRosNodeHandle());
                 //ros::NodeHandle node;
                 sub = getRosNodeHandle()->subscribe<nav_msgs::OccupancyGrid>("map",10, &GraphSearchNode::receive_map_data, this);
+
                 first_set = false;
                 std::cout<<"init graph search node"<<std::endl;
             }
@@ -46,19 +47,11 @@ namespace adore
                     std::cout<<"receive map data first time"<<std::endl;
                     first_set=true;
                     int test=1;
-                    for(int i = 0; i < msg->info.width * msg->info.height; i++){
-                        if(msg->data[i]==-1){
-                            std::cout<<msg->data[i]<<std::endl;
-                        }
-                    }
-
-                    gs_=  new adore::apps::GraphSearch(msg, test, (uint32_t)(msg->info.height), (uint32_t)(msg->info.width), Baseapp::getRosNodeHandle()); //->init_gs(data,1,1);//(new_data, (uint32_t)(msg->info.height), (uint32_t)(msg->info.width));//, msg->data, (uint32_t)msg->info.height, (uint32_t)msg->info.width);
-                    std::cout << "gs init"<<std::endl;
+                    gs_=  new adore::apps::GraphSearch(msg, test, (uint32_t)(msg->info.height), (uint32_t)(msg->info.width), Baseapp::getRosNodeHandle()); //->init_gs(data,1,1);//(new_data, (uint32_t)(msg->info.height), (uint32_t)(msg->info.width));//, msg->data, (uint32_t)msg->info.height, (uint32_t)msg->info.width)
                     // timer callbacks
                     std::function<void()> run_fcn(std::bind(&adore::apps::GraphSearch::update, gs_));
-                    std::cout << "gs bind"<<std::endl;
                     adore_if_ros_scheduling::Baseapp::addTimerCallback(run_fcn);
-                    std::cout << "gs sheduler"<<std::endl;
+
                 }
                 
             }
@@ -73,7 +66,7 @@ namespace adore
             {
                         double r,p,y;
                         //tf::Matrix3x3(tf::Quaternion(msg.orientation.x,msg.orientation.y,msg.orientation.z,msg.orientation.w)).getRPY(r,p,y);
-                        validEnd = false; //End.setPosition(msg.position.x,msg.position.y,y,Width,Length,Depth, adore::mad::CoordinateConversion::DegToRad(HeadingResolution),  figure3);
+                        validEnd = true; //End.setPosition(msg.position.x,msg.position.y,y,Width,Length,Depth, adore::mad::CoordinateConversion::DegToRad(HeadingResolution),  figure3);
                         //End.print();
             }     
                 

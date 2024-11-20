@@ -79,9 +79,9 @@ WORKDIR /tmp/${PROJECT}/${PROJECT}/build
 RUN source /opt/ros/noetic/setup.bash && \
     cmake .. \
              -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
-             -DCMAKE_BUILD_TYPE=Release \
+             -DCMAKE_BUILD_TYPE=RelWithDebInfo \
              -DCMAKE_INSTALL_PREFIX="install" && \
-    cmake --build . -v --config Release --target install -- -j $(nproc) 
+    cmake --build . -v --config RelWithDebInfo --target install -- -j2
 
 RUN sudo apt-get install ros-noetic-map-server
 #FROM alpine:3.14 AS adore_if_ros_package
